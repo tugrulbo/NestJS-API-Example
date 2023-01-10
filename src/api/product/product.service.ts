@@ -4,6 +4,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductDto } from './product.dto';
 import { ProductEntity } from './product.entity';
+import { UserType } from '../user/user.entity';
 
 @Injectable()
 export class ProductService {
@@ -16,7 +17,7 @@ export class ProductService {
     }
 
     public async findOne(productId: string) {
-        const product = await this.repository.findOne({ where: { id: productId }, relations: ['owner'] });
+        let product = await this.repository.findOne({ where: { id: productId }, relations: ['owner'] });
 
         if (!product)
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
@@ -46,11 +47,24 @@ export class ProductService {
         if (!product)
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
 
-        product.category_id = category_id;
-        product.name = name;
-        product.image = image;
-        product.description = description;
-        product.owner = request.user.id;
+        if (request.user.user_type == UserType.USER) {
+            if (product.owner == request.user.id) {
+                product.category_id = category_id;
+                product.name = name;
+                product.image = image;
+                product.description = description;
+                product.owner = request.user.id;
+            } else {
+                throw new HttpException('You cant update', HttpStatus.NOT_ACCEPTABLE);
+            }
+
+        } else {
+            product.category_id = category_id;
+            product.name = name;
+            product.image = image;
+            product.description = description;
+            product.owner = request.user.id;
+        }
 
         return this.repository.update({ id: productId }, product);
     }
