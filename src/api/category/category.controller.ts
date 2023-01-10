@@ -6,7 +6,6 @@ import { CategoryDto } from './category.dto';
 import { CategoryService } from './category.service';
 
 @UseGuards(AuthGuard())
-
 @Controller('category')
 export class CategoryController {
     @Inject(CategoryService)
