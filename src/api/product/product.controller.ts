@@ -11,9 +11,6 @@ export class ProductController {
     @Inject(ProductService)
     private readonly service: ProductService;
 
-
-    @UseGuards(RoleGuard(UserType.USER))
-    @UseGuards(RoleGuard(UserType.SUPERUSER))
     @Get('/')
     private all() {
         return this.service.all();
@@ -25,15 +22,11 @@ export class ProductController {
         return this.service.findOne(id);
     }
 
-    @UseGuards(RoleGuard(UserType.USER))
-    @UseGuards(RoleGuard(UserType.SUPERUSER))
     @Post('/')
     private add(@Req() request: any) {
         return this.service.add(request);
     }
 
-    @UseGuards(RoleGuard(UserType.USER))
-    @UseGuards(RoleGuard(UserType.SUPERUSER))
     @Post('/:id')
     private update(@Param('id') id: string, @Req() request: any) {
         return this.service.update(id, request);
