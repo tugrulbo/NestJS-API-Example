@@ -1,8 +1,6 @@
 import { HttpException, HttpStatus, Injectable, UseGuards } from '@nestjs/common';
-import { AuthGuard } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
-import { ProductDto } from './product.dto';
 import { ProductEntity } from './product.entity';
 import { UserType } from '../user/user.entity';
 
