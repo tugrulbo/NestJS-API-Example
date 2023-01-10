@@ -4,7 +4,6 @@ import { User, UserType } from '@/api/user/user.entity';
 import { Repository } from 'typeorm';
 import { RegisterDto, LoginDto } from './auth.dto';
 import { AuthHelper } from './auth.helper';
-import { userInfo } from 'os';
 
 @Injectable()
 export class AuthService {
@@ -55,12 +54,6 @@ export class AuthService {
         if (!isPasswordValid) {
             throw new HttpException('No user found', HttpStatus.NOT_FOUND);
         }
-
-        return this.helper.generateToken(user);
-    }
-
-    public async refresh(user: User): Promise<string> {
-
         return this.helper.generateToken(user);
     }
 }
