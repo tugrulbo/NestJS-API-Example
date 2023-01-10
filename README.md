@@ -26,10 +26,11 @@
 
 [Nest](https://github.com/nestjs/nest) framework TypeScript starter repository.
 
-## Installation
+## Veritabanı
 
 ```bash
-$ npm install
+$ psql -U postgres --password
+$ CREATE DATABASE second_hand_shopping_db;
 ```
 
 ## Endpoints
