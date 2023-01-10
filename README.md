@@ -32,30 +32,31 @@
 $ npm install
 ```
 
-## Running the app
+## Endpoints
 
 ```bash
-# development
-$ npm run start
+# Auth
+-> POST register
+-> POST login
+-> POST superuser
 
-# watch mode
-$ npm run start:dev
+# Product
+-> GET product
+-> GET product/:id
+-> POST product
+-> POST product/:id
+-> DEL product/:id
 
-# production mode
-$ npm run start:prod
-```
+# Category
+-> GET category
+-> GET category/:id
+-> POST category
+-> POST category/:id
+-> DEL category/:id
 
-## Test
-
-```bash
-# unit tests
-$ npm run test
-
-# e2e tests
-$ npm run test:e2e
-
-# test coverage
-$ npm run test:cov
+# User
+-> GET user/products/:id
+-> POST user/usertype
 ```
 
 ## Support
