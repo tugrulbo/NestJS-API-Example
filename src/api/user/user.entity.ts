@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { BaseEntity, Column, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, Entity, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { ProductEntity } from '../product/product.entity';
 
 export enum UserType {
     SUPERUSER = 'SuperUser',
@@ -28,5 +29,8 @@ export class User extends BaseEntity {
         default: UserType.USER
     })
     public user_type!: UserType;
+
+    @OneToMany(() => ProductEntity, productEntity => productEntity.owner)
+    public product!: ProductEntity[]
 
 }
