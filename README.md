@@ -58,6 +58,8 @@ $ npm install
 -> GET user/products/:id
 -> POST user/usertype
 ```
+## POSTMAN COLLECTION
+[NestJS Case.postman_collection.zip](https://github.com/tugrulbo/second_hand_shopping/files/10380204/NestJS.Case.postman_collection.zip)
 
 ## License
 
