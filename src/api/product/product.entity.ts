@@ -1,5 +1,6 @@
 import { Exclude } from 'class-transformer';
-import { BaseEntity, Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { BaseEntity, Column, CreateDateColumn, Entity, JoinColumn, ManyToOne, OneToMany, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { User } from '../user/user.entity';
 
 @Entity()
 export class ProductEntity extends BaseEntity {
@@ -18,8 +19,9 @@ export class ProductEntity extends BaseEntity {
     @Column({ type: 'varchar' })
     public description!: string;
 
-    @PrimaryGeneratedColumn('uuid')
-    public owner!: string;
+    @ManyToOne(() => User, user => user.id, { onDelete: 'CASCADE' })
+    @JoinColumn()
+    public owner: string;
 
     @Exclude()
     @CreateDateColumn()

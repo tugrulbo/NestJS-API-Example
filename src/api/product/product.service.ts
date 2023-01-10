@@ -1,4 +1,5 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductDto } from './product.dto';
@@ -11,11 +12,11 @@ export class ProductService {
     private readonly repository: Repository<ProductEntity>;
 
     public async all() {
-        return this.repository.find();
+        return this.repository.find({ relations: ['owner'] });
     }
 
     public async findOne(productId: string) {
-        const product = await this.repository.findOne({ where: { id: productId } });
+        const product = await this.repository.findOne({ where: { id: productId }, relations: ['owner'] });
 
         if (!product)
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
@@ -24,8 +25,8 @@ export class ProductService {
 
     }
 
-    public add(request: ProductDto) {
-        const { category_id, name, image, description } = request
+    public add(request: any) {
+        const { category_id, name, image, description } = request['body']
 
         const product = new ProductEntity();
 
@@ -33,11 +34,12 @@ export class ProductService {
         product.name = name;
         product.image = image;
         product.description = description;
+        product.owner = request.user.id
 
         return this.repository.save(product);
     }
 
-    public async update(productId: string, request: ProductDto) {
+    public async update(productId: string, request: any) {
         const { category_id, name, image, description } = request
         let product = await this.repository.findOne({ where: { id: productId } });
 
@@ -48,6 +50,7 @@ export class ProductService {
         product.name = name;
         product.image = image;
         product.description = description;
+        product.owner = request.user.id;
 
         return this.repository.update({ id: productId }, product);
     }

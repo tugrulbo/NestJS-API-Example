@@ -1,4 +1,5 @@
-import { Body, Controller, Delete, Get, Inject, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Inject, Param, Post, Req, UseGuards } from '@nestjs/common';
+import { AuthGuard } from '@nestjs/passport';
 import { ProductDto } from './product.dto';
 import { ProductService } from './product.service';
 
@@ -17,16 +18,19 @@ export class ProductController {
         return this.service.findOne(id);
     }
 
+    @UseGuards(AuthGuard())
     @Post('/')
-    private add(@Body() request: ProductDto) {
+    private add(@Req() request: any) {
         return this.service.add(request);
     }
 
+    @UseGuards(AuthGuard())
     @Post('/:id')
-    private update(@Param('id') id: string, @Body() request: ProductDto) {
+    private update(@Param('id') id: string, @Req() request: any) {
         return this.service.update(id, request);
     }
 
+    @UseGuards(AuthGuard())
     @Delete('/:id')
     private delete(@Param('id') id: string) {
         return this.service.delete(id);
