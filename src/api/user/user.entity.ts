@@ -9,8 +9,8 @@ export enum UserType {
 
 @Entity()
 export class User extends BaseEntity {
-    @PrimaryGeneratedColumn()
-    public id!: number;
+    @PrimaryGeneratedColumn('uuid')
+    public id!: string;
 
     @Column({ type: 'varchar', nullable: true })
     public name: string | null;
