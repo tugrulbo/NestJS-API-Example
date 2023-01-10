@@ -2,8 +2,6 @@ import { Body, Controller, Inject, Post, ClassSerializerInterceptor, UseIntercep
 import { User } from '@/api/user/user.entity';
 import { RegisterDto, LoginDto } from './auth.dto';
 import { AuthService } from './auth.service';
-import { Request } from 'express';
-import { AuthGuard } from '@nestjs/passport';
 
 @Controller('auth')
 export class AuthController {
@@ -24,11 +22,5 @@ export class AuthController {
     @Post('login')
     private login(@Body() body: LoginDto): Promise<string | never> {
         return this.service.login(body);
-    }
-
-    @Post('refresh')
-    @UseGuards(AuthGuard('jwt'))
-    private refresh(@Req() { user }: Request): Promise<string | never> {
-        return this.service.refresh(<User>user);
     }
 }
