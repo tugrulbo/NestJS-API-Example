@@ -41,32 +41,36 @@ export class ProductService {
     }
 
     public async update(productId: string, request: any) {
-        const { category_id, name, image, description } = request
-        let product = await this.repository.findOne({ where: { id: productId } });
+        const { category_id, name, image, description } = request['body']
+        let product = await this.repository.findOne({ where: { id: productId }, relations: ['owner'] });
 
         if (!product)
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
 
+
+
         if (request.user.user_type == UserType.USER) {
-            if (product.owner == request.user.id) {
+            if (product.owner['id'] == request.user.id) {
                 product.category_id = category_id;
                 product.name = name;
                 product.image = image;
                 product.description = description;
-                product.owner = request.user.id;
+                return this.repository.save(product);
             } else {
                 throw new HttpException('You cant update', HttpStatus.NOT_ACCEPTABLE);
             }
 
-        } else {
+        }
+
+        if (request.user.user_type == UserType.USER) {
             product.category_id = category_id;
             product.name = name;
             product.image = image;
             product.description = description;
-            product.owner = request.user.id;
+            return this.repository.save(product);
         }
 
-        return this.repository.update({ id: productId }, product);
+
     }
 
     public async delete(id: string) {
