@@ -13,7 +13,4 @@ export class ProductDto {
 
     @IsString()
     public readonly description: string;
-
-    @IsString()
-    public readonly owner: string;
 }
