@@ -15,7 +15,6 @@ export class RegisterDto {
     @MinLength(8)
     public readonly password: string;
 
-
 }
 
 export class LoginDto {
