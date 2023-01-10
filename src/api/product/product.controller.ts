@@ -22,6 +22,11 @@ export class ProductController {
         return this.service.findOne(id);
     }
 
+    @Get('/user/:id')
+    private findUserProducts(@Param('id') id: string) {
+        return this.service.findUserProducts(id);
+    }
+
     @Post('/')
     private add(@Req() request: any) {
         return this.service.add(request);

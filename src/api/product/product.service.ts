@@ -41,7 +41,7 @@ export class ProductService {
     }
 
     public async findUserProducts(id: string) {
-        const products = await this.repository.findOne({ where: { owner: id }, relations: ['owner'] });
+        const products = await this.repository.find({ where: { owner: id } });
 
         if (!products)
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
