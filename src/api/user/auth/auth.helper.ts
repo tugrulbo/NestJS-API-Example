@@ -42,19 +42,4 @@ export class AuthHelper {
         return bcrypt.hashSync(password, salt);
     }
 
-    private async validate(token: string): Promise<boolean | never> {
-        const decoded: unknown = this.jwt.verify(token);
-
-        if (!decoded) {
-            throw new HttpException('Forbidden', HttpStatus.FORBIDDEN);
-        }
-
-        const user: User = await this.validateUser(decoded);
-
-        if (!user) {
-            throw new UnauthorizedException();
-        }
-
-        return true;
-    }
 }
