@@ -6,6 +6,8 @@ import { ProductEntity } from './product.entity';
 import { ConfigService } from '@nestjs/config';
 import { ProductController } from './product.controller';
 import { ProductService } from './product.service';
+import { PermissionGuard } from '@/common/permissions/permission.guard';
+import { PermissionModule } from '@/common/permissions/permission.module';
 
 @Module({
   imports: [
@@ -18,6 +20,7 @@ import { ProductService } from './product.service';
       }),
     }),
     TypeOrmModule.forFeature([ProductEntity]),
+    PermissionModule
   ],
   controllers: [ProductController],
   providers: [ProductService]
