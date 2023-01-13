@@ -4,6 +4,7 @@ import { ProductEntity } from '../product/product.entity';
 
 export enum UserType {
     SUPERUSER = 'SuperUser',
+    ADMIN = 'Admin',
     USER = 'User'
 }
 
