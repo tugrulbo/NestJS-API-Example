@@ -8,6 +8,7 @@ import { TypeOrmConfigService } from './shared/typeorm/typeorm.service';
 import { ApiModule } from './api/api.module';
 import { LoggerModule } from './common/logger/logger.module';
 import { ExceptionsModule } from './common/exceptions/exceptions.module';
+import { PermissionModule } from './common/permissions/permission.module';
 
 const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
 
@@ -17,7 +18,8 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
     ApiModule,
     LoggerModule,
-    ExceptionsModule
+    ExceptionsModule,
+    PermissionModule
   ],
   controllers: [AppController],
   providers: [AppService],

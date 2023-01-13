@@ -5,6 +5,7 @@ import { AuthGuard } from '@nestjs/passport';
 import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 import { PermissionGuard } from '@/common/permissions/permission.guard';
+import { CreateProductPermissionHandler, DeleteProductPermissionHandler, DeleteUserPermissionHandler, EditProductPermissionHandler, ReadProductPermissionHandler } from '@/common/permissions/permission';
 
 @Controller('product')
 @UseGuards(AuthGuard(), PermissionGuard)
@@ -13,31 +14,31 @@ export class ProductController {
     private readonly service: ProductService;
 
     @Get('/')
-    @Permission({ action: DefaultActions.read, subject: ProductEntity })
+    @Permission(ReadProductPermissionHandler)
     private all() {
         return this.service.all();
     }
 
     @Get('/:id')
-    @Permission({ action: DefaultActions.read, subject: ProductEntity })
+    @Permission(ReadProductPermissionHandler)
     private findOne(@Param('id') id: string) {
         return this.service.findOne(id);
     }
 
     @Post('/')
-    @Permission({ action: DefaultActions.create, subject: ProductEntity })
+    @Permission(CreateProductPermissionHandler)
     private add(@Req() request: any) {
         return this.service.add(request);
     }
 
     @Post('/:id')
-    @Permission({ action: DefaultActions.update, subject: ProductEntity })
+    @Permission(EditProductPermissionHandler)
     private update(@Param('id') id: string, @Req() request: any) {
         return this.service.update(id, request);
     }
 
     @Delete('/:id')
-    @Permission({ action: DefaultActions.delete, subject: ProductEntity })
+    @Permission(DeleteProductPermissionHandler)
     private delete(@Param('id') id: string) {
         return this.service.delete(id);
     }

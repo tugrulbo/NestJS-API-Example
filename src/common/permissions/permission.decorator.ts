@@ -1,7 +1,8 @@
 import { User } from "@/api/user/user.entity";
-import { SetMetadata } from "@nestjs/common";
+import { SetMetadata, Type } from "@nestjs/common";
 import { Subject } from "rxjs";
 import { DefaultActions, Subjects } from "./factory/permission.factory";
+import { PermissionHandler } from "./permission/permission-handler.interface";
 
 export interface RequiredRole {
     action: DefaultActions;
@@ -10,4 +11,4 @@ export interface RequiredRole {
 
 export const CHECK_PERMISSION = 'check_permission';
 
-export const Permission = (...requirements: RequiredRole[]) => SetMetadata(CHECK_PERMISSION, requirements);
+export const Permission = (...requirements: Type<PermissionHandler>[]) => SetMetadata(CHECK_PERMISSION, requirements);

@@ -24,6 +24,7 @@ export class PermissionFactory {
     defineAbility(user: User) {
         const { can, cannot, build } = new AbilityBuilder<AppAbility>(createMongoAbility);
 
+        // { orgId: { $ne: user.orgId }
         switch (user.user_type) {
             case UserType.SUPERUSER:
                 can(DefaultActions.manage, "all");
@@ -38,14 +39,18 @@ export class PermissionFactory {
                 can(DefaultActions.update, User);
                 can(DefaultActions.update, ProductEntity);
                 can(DefaultActions.update, CategoryEntity);
-                cannot(DefaultActions.delete, User).because('You cannot delete user');
-                cannot(DefaultActions.delete, User).because('You cannot delete product');
-                cannot(DefaultActions.delete, User).because('You cannot delete category');
+                cannot(DefaultActions.delete, User, { id: { $not: { $eq: user.id } } }).because('You cannot delete user');
+                cannot(DefaultActions.delete, ProductEntity).because('You cannot delete product');
+                cannot(DefaultActions.delete, CategoryEntity).because('You cannot delete category');
                 break;
             case UserType.USER:
                 can(DefaultActions.read, User);
                 can(DefaultActions.read, ProductEntity);
                 can(DefaultActions.read, CategoryEntity);
+                can(DefaultActions.update, User, { id: user.id }).because('You can update on yours');
+                cannot(DefaultActions.delete, User, { id: { $not: { $eq: user.id } } }).because('You cannot delete user');
+                cannot(DefaultActions.delete, ProductEntity).because('You cannot delete product');
+                cannot(DefaultActions.delete, CategoryEntity).because('You cannot delete category');
                 break;
             default:
                 break;
