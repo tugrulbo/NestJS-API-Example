@@ -17,7 +17,7 @@ const envFilePath: string = getEnvPath(`${__dirname}/common/envs`);
     TypeOrmModule.forRootAsync({ useClass: TypeOrmConfigService }),
     ApiModule,
     LoggerModule,
-    ExceptionsModule,
+    ExceptionsModule
   ],
   controllers: [AppController],
   providers: [AppService],
