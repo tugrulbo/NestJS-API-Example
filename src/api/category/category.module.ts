@@ -6,6 +6,7 @@ import { CategoryEntity } from './category.entity';
 import { ConfigService } from '@nestjs/config';
 import { CategoryController } from './category.controller';
 import { CategoryService } from './category.service';
+import { PermissionModule } from '@/common/permissions/permission.module';
 
 @Module({
   imports: [
@@ -18,6 +19,7 @@ import { CategoryService } from './category.service';
       }),
     }),
     TypeOrmModule.forFeature([CategoryEntity]),
+    PermissionModule
   ],
   controllers: [CategoryController],
   providers: [CategoryService]
