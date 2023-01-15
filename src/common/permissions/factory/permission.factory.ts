@@ -51,6 +51,7 @@ export class PermissionFactory {
                 cannot(DefaultActions.delete, User, { id: { $not: { $eq: user.id } } }).because('You cannot delete user');
                 cannot(DefaultActions.delete, ProductEntity).because('You cannot delete product');
                 cannot(DefaultActions.delete, CategoryEntity).because('You cannot delete category');
+                cannot(DefaultActions.create, CategoryEntity).because('You cannot create category');
                 break;
             default:
                 break;
