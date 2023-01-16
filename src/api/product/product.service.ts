@@ -3,6 +3,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import { ProductEntity } from './product.entity';
 import { UserType } from '../user/user.entity';
+import { ProductDto } from './product.dto';
 
 @Injectable()
 export class ProductService {
@@ -24,8 +25,8 @@ export class ProductService {
 
     }
 
-    public add(request: any) {
-        const { category_id, name, image, description } = request['body']
+    public add(request: ProductDto) {
+        const { category_id, name, image, description } = request
 
         const product = new ProductEntity();
 
@@ -33,18 +34,16 @@ export class ProductService {
         product.name = name;
         product.image = image;
         product.description = description;
-        product.owner = request.user.id
 
         return this.repository.save(product);
     }
 
-    public async update(productId: string, request: any) {
-        const { category_id, name, image, description } = request['body']
+    public async update(productId: string, request: any, body: ProductDto,) {
+        const { category_id, name, image, description } = body
         let product = await this.repository.findOne({ where: { id: productId }, relations: ['owner'] });
 
         if (!product)
             throw new HttpException('Product not found', HttpStatus.NOT_FOUND);
-
 
 
         if (request.user.user_type == UserType.USER) {
@@ -60,7 +59,7 @@ export class ProductService {
 
         }
 
-        if (request.user.user_type == UserType.USER) {
+        if (request.user.user_type == UserType.SUPERUSER) {
             product.category_id = category_id;
             product.name = name;
             product.image = image;
