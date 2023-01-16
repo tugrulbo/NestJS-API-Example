@@ -7,6 +7,9 @@ import { ProductService } from './product.service';
 import { CreateProductPermissionHandler, DeleteProductPermissionHandler, DeleteUserPermissionHandler, EditProductPermissionHandler, ReadProductPermissionHandler } from '@/common/permissions/permission';
 import { ServicePermissions } from '@/common/permissions/service/permission/service-permission-list';
 import { ServicePermissionGuard } from '@/common/permissions/permission.guard';
+import { ProductDto } from './product.dto';
+import { Body } from '@nestjs/common/decorators';
+import { ApiBearerAuth } from '@nestjs/swagger';
 
 @Controller('product')
 @UseGuards(AuthGuard(), ServicePermissionGuard(ServicePermissions.PRODUCTSERVICE))
@@ -16,30 +19,43 @@ export class ProductController {
 
     @Get('/')
     @Permission(ReadProductPermissionHandler)
+    @ApiBearerAuth()
     private all() {
         return this.service.all();
     }
 
     @Get('/:id')
     @Permission(ReadProductPermissionHandler)
+    @ApiBearerAuth()
     private findOne(@Param('id') id: string) {
         return this.service.findOne(id);
     }
 
     @Post('/')
     @Permission(CreateProductPermissionHandler)
-    private add(@Req() request: any) {
-        return this.service.add(request);
+    @ApiBearerAuth()
+    private add(@Req() request, @Body() body: ProductDto) {
+        const userId = request.user.id
+        console.log(userId);
+
+        body.owner = userId.toString();
+        return this.service.add(body);
     }
 
     @Post('/:id')
     @Permission(EditProductPermissionHandler)
-    private update(@Param('id') id: string, @Req() request: any) {
-        return this.service.update(id, request);
+    @ApiBearerAuth()
+    private update(@Param('id') id: string, @Req() request, @Body() body: ProductDto) {
+        const userId = request.user.id
+        console.log(userId);
+
+        body.owner = userId.toString();
+        return this.service.update(id, request, body);
     }
 
     @Delete('/:id')
     @Permission(DeleteProductPermissionHandler)
+    @ApiBearerAuth()
     private delete(@Param('id') id: string) {
         return this.service.delete(id);
     }
