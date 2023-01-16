@@ -4,6 +4,7 @@ import { permissions } from './permission';
 import { permissionProviders } from './providers';
 
 @Module({
+    imports: [],
     providers: [PermissionFactory, ...permissionProviders],
     exports: [PermissionFactory, ...permissions]
 })

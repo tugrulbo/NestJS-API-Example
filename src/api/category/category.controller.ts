@@ -1,6 +1,5 @@
 import { CreateCategoryPermissionHandler, EditCategoryPermissionHandler } from '@/common/permissions/permission';
 import { Permission } from '@/common/permissions/permission.decorator';
-import { ServicePermissionGuard } from '@/common/permissions/permission.guard';
 import { ServicePermissions } from '@/common/permissions/service/permission/service-permission-list';
 import { Body, Controller, Delete, Get, Inject, Param, Post, UseGuards } from '@nestjs/common';
 import { AuthGuard } from '@nestjs/passport';
@@ -11,12 +10,13 @@ import { CategoryService } from './category.service';
 
 
 @Controller('category')
-@UseGuards(AuthGuard(), ServicePermissionGuard(ServicePermissions.CATEGORYSERVICE))
+@UseGuards(AuthGuard())
 export class CategoryController {
     @Inject(CategoryService)
     private readonly service: CategoryService;
 
     @Get('/')
+
     private all() {
         return this.service.all();
     }

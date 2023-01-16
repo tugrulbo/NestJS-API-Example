@@ -1,9 +1,9 @@
 import { Type } from "@nestjs/common";
 
 export enum ServicePermissions {
-    PRODUCTSERVICE = 'product_service',
-    CATEGORYSERVICE = 'category_service',
-    USERSERVICE = 'user_service'
+    PRODUCTSERVICE = '/product',
+    CATEGORYSERVICE = '/category',
+    USERSERVICE = '/user'
 }
 
 

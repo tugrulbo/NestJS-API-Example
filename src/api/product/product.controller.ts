@@ -6,13 +6,15 @@ import { ProductEntity } from './product.entity';
 import { ProductService } from './product.service';
 import { CreateProductPermissionHandler, DeleteProductPermissionHandler, DeleteUserPermissionHandler, EditProductPermissionHandler, ReadProductPermissionHandler } from '@/common/permissions/permission';
 import { ServicePermissions } from '@/common/permissions/service/permission/service-permission-list';
-import { ServicePermissionGuard } from '@/common/permissions/permission.guard';
 import { ProductDto } from './product.dto';
 import { Body } from '@nestjs/common/decorators';
 import { ApiBearerAuth } from '@nestjs/swagger';
+import { PermissionGuard } from '@/common/permissions/permission.guard';
+import { ServicePermissionGuard } from '@/common/permissions/service-permission.decorator';
 
+@ServicePermissionGuard(ServicePermissions.PRODUCTSERVICE)
 @Controller('product')
-@UseGuards(AuthGuard(), ServicePermissionGuard(ServicePermissions.PRODUCTSERVICE))
+@UseGuards(AuthGuard(), PermissionGuard)
 export class ProductController {
     @Inject(ProductService)
     private readonly service: ProductService;
@@ -36,8 +38,6 @@ export class ProductController {
     @ApiBearerAuth()
     private add(@Req() request, @Body() body: ProductDto) {
         const userId = request.user.id
-        console.log(userId);
-
         body.owner = userId.toString();
         return this.service.add(body);
     }
@@ -47,8 +47,6 @@ export class ProductController {
     @ApiBearerAuth()
     private update(@Param('id') id: string, @Req() request, @Body() body: ProductDto) {
         const userId = request.user.id
-        console.log(userId);
-
         body.owner = userId.toString();
         return this.service.update(id, request, body);
     }

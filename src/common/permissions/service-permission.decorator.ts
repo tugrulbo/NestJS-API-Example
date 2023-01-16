@@ -5,11 +5,7 @@ import { DefaultActions, Subjects } from "./factory/permission.factory";
 import { PermissionHandler } from "./permission/permission-handler.interface";
 import { ServicePermissions } from "./service/permission/service-permission-list";
 
-export interface RequiredRole {
-    action: DefaultActions;
-    subject: Subjects;
-}
 
-export const CHECK_PERMISSION = 'check_permission';
+export const CHECK_SERVICE_PERMISSION = 'check_service_permission';
 
-export const Permission = (...requirements: Type<PermissionHandler>[]) => SetMetadata(CHECK_PERMISSION, requirements);
+export const ServicePermissionGuard = (...requirements: ServicePermissions[]) => SetMetadata(CHECK_SERVICE_PERMISSION, requirements);
